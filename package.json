@@ -18,6 +18,6 @@
   },
   "homepage": "https://github.com/danmarshall/dxf-parser-typings#readme",
   "dependencies": {
-    "indefinitely-typed": "git+https://github.com/danmarshall/indefinitely-typed.git"
+    "indefinitely-typed": "^1.0.2"
   }
 }
