@@ -4,7 +4,7 @@
   "description": "@types for dxf-parser",
   "main": "index.js",
   "scripts": {
-    "postinstall": "indefinitely-typed",
+    "postinstall": "indefinitely-typed --name dxf-parser",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
