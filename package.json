@@ -1,0 +1,23 @@
+{
+  "name": "dxf-parser-typings",
+  "version": "1.0.0",
+  "description": "@types for dxf-parser",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "indefinitely-typed",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danmarshall/dxf-parser-typings.git"
+  },
+  "author": "Dan Marshall",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/danmarshall/dxf-parser-typings/issues"
+  },
+  "homepage": "https://github.com/danmarshall/dxf-parser-typings#readme",
+  "dependencies": {
+    "indefinitely-typed": "git+https://github.com/danmarshall/indefinitely-typed.git"
+  }
+}
