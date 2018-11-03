@@ -1,124 +1,112 @@
-export interface Vertex {
+
+declare class DxfParser {
+    parseSync(fileText: string): DXFDocument;
+}
+
+interface DXFDocument {
+    blocks?: {
+        [blockName: string]: Block;
+    };
+    entities?: Entity[];
+    header?: Header;
+    tables?: {
+        [tableName: string]: Table;
+    };
+}
+
+interface Header {
+    [headerName: string]: number | string;
+}
+
+interface Entity {
+    handle?: number;
+    ownerHandle?: number;
+    type?: string | number;
+}
+
+interface Block extends Entity {
+    name?: string;
+    name2?: string;
+    xrefPath?: string;
+    layer?: string;
+    position?: Vertex;
+    paperSpace?: boolean;
+    type?: number;
+    entities?: Entity[];
+}
+
+interface Table {
+    handle?: number;
+    ownerHandle?: number;
+}
+
+interface Vertex {
     x: number;
     y: number;
     z?: number;
     bulge?: number;
 }
 
-export interface Header {
-    $ACADVER: string;
-    $ACADMAINTVER: number;
-    $DWGCODEPAGE: string;
-    $REQUIREDVERSIONS: number;
-    $INSBASE: Vertex;
-    $EXTMIN: Vertex;
-    $EXTMAX: Vertex;
+interface ViewPort {
+    name?: string;
+    ownerHandle?: number;
+    ambientColor?: number;
+    lensLength?: number;
+    backClippingPlane?: number;
+    frontClippingPlane?: number;
+    viewHeight?: number;
+    snapRotationAngle?: number;
+    viewTwistAngle?: number;
+    orthographicType?: number;
+    renderMode?: number;
+    defaultLightingType?: number;
+    defaultLightingOn?: boolean;
+    center?: Vertex;
+    gridSpacing?: Vertex;
+    lowerLeftCorner?: Vertex;
+    snapBasePoint?: Vertex;
+    snapSpacing?: Vertex;
+    ucsXAxis?: Vertex;
+    ucsYAxis?: Vertex;
+    ucsOrigin?: Vertex;
+    upperRightCorner?: Vertex;
+    viewDirectionFromTarget?: Vertex;
+    viewTarget?: Vertex;
 }
 
-export interface Continuous {
-    name: string;
-    description: string;
-    patternLength: number;
+interface LineType {
+    name?: string;
+    description?: string;
+    pattern?: number[];
+    patternLength?: number;
 }
 
-export interface HIDDEN2 {
-    name: string;
-    description: string;
-    pattern: number[];
-    patternLength: number;
+interface Layer {
+    name?: string;
+    visible?: boolean;
+    colorIndex?: number;
+    color?: number;
+    frozen?: boolean;
 }
 
-export interface CENTER {
-    name: string;
-    description: string;
-    pattern: number[];
-    patternLength: number;
-}
-
-export interface LineTypes {
-    Continuous: Continuous;
-    HIDDEN2: HIDDEN2;
-    CENTER: CENTER;
-}
-
-export interface LineType {
-    handle: string;
-    ownerHandle: string;
-    lineTypes: LineTypes;
-}
-
-export interface FGDim {
-    name: string;
-    visible: boolean;
-    color: number;
-}
-
-export interface FGDtlHatch {
-    name: string;
-    visible: boolean;
-    color: number;
-}
-
-export interface FGDtlHidden {
-    name: string;
-    visible: boolean;
-    color: number;
-}
-
-export interface Vport {
-    name: string;
-    visible: boolean;
-    color: number;
-}
-
-export interface FGLogo {
-    name: string;
-    visible: boolean;
-    color: number;
-}
-
-export interface Layers {
-}
-
-export interface Layer {
-    handle: string;
-    ownerHandle: string;
-    layers: Layers;
-}
-
-export interface Tables {
-    lineType: LineType;
-    layer: Layer;
-}
-
-export interface Position {
-    x: number;
-    y: number;
-    z: number;
-}
-
-export interface U34 {
-    handle: string;
-    ownerHandle: string;
-    layer: string;
-    name: string;
-    type: number;
-    position: Vertex;
-    name2: string;
-    xrefPath: string;
-    entities: Entity[];
-}
-
-export interface Blocks {
-}
-
-export interface Entity {
-    type: string;
+interface Entity3DFACE extends Entity {
+    type: '3DFACE';
     vertices: Vertex[];
-    handle: string;
-    ownerHandle: string;
-    layer: string;
     shape?: boolean;
+    hasContinuousLinetypePattern?: boolean;
+}
+
+interface EntityARC extends Entity {
+    type: 'ARC';
+    center?: Vertex;
+    radius?: number;
+    startAngle?: number;
+    endAngle?: number;
+    angleLength?: number;
+}
+
+interface EntityCIRCLE extends Entity {
+    type: 'CIRCLE';
     center?: Vertex;
     radius?: number;
     startAngle?: number;
@@ -126,9 +114,180 @@ export interface Entity {
     endAngle?: number;
 }
 
-export interface DXFContent {
-    header: Header;
-    tables: Tables;
-    blocks: Blocks;
-    entities: Entity[];
+interface EntityELLIPSE extends Entity {
+    type: 'ELLIPSE';
+    center?: Vertex;
+    majorAxisEndPoint?: Vertex;
+    axisRatio?: number;
+    startAngle?: number;
+    endAngle?: number;
+    name?: string;
+}
+
+interface Extruded {
+    extrusionDirectionX?: number;
+    extrusionDirectionY?: number;
+    extrusionDirectionZ?: number;
+}
+
+interface EntityATTDEF extends Entity, Extruded {
+    type: 'ATTDEF';
+    scale: number;
+    textStyle: string;
+    text?: string;
+    tag?: string;
+    prompt?: string;
+    startPoint?: Vertex;
+    endPoint?: Vertex;
+    thickness?: number;
+    textHeight?: number;
+    rotation?: number;
+    obliqueAngle?: number;
+    invisible?: boolean;
+    constant?: boolean;
+    verificationRequired?: boolean;
+    preset?: boolean;
+    backwards?: boolean;
+    mirrored?: boolean;
+    horizontalJustification?: number;
+    fieldLength?: number;
+    verticalJustification?: number;
+}
+
+interface EntityDIMENSION extends Entity {
+    type: 'DIMENSION';
+    block?: string;
+    anchorPoint?: Vertex;
+    middleOfText?: Vertex;
+    insertionPoint?: Vertex;
+    linearOrAngularPoint1?: Vertex;
+    linearOrAngularPoint2?: Vertex;
+    diameterOrRadiusPoint?: Vertex;
+    arcPoint?: Vertex;
+    dimensionType?: number;
+    attachmentPoint?: number;
+    actualMeasurement?: number;
+    text?: string;
+    angle?: number;
+}
+
+interface EntityINSERT extends Entity {
+    type: 'INSERT';
+    name?: string;
+    xScale?: number;
+    yScale?: number;
+    zScale?: number;
+    position?: Vertex;
+    rotation?: number;
+    columnCount?: number;
+    rowCount?: number;
+    columnSpacing?: number;
+    rowSpacing?: number;
+    extrusionDirection?: Vertex;
+}
+
+interface EntityLINE extends Entity {
+    type: 'LINE';
+    vertices: Vertex[];
+    extrusionDirection?: Vertex;
+}
+
+interface VertexStroke extends Vertex {
+    startWidth?: number;
+    endWidth?: number;
+}
+
+interface EntityLWPOLYLINE extends Entity, Extruded {
+    type: 'LWPOLYLINE';
+    vertices: VertexStroke[];
+    elevation?: number;
+    depth?: number;
+    shape?: boolean;
+    hasContinuousLinetypePattern?: boolean;
+    width?: number;
+}
+
+interface EntityMTEXT extends Entity {
+    type: 'MTEXT';
+    text?: string;
+    position?: Vertex;
+    height?: number;
+    width?: number;
+    rotation?: number;
+    attachmentPoint?: number;
+    drawingDirection?: number;
+}
+
+interface EntityPOINT extends Entity {
+    type: 'POINT';
+    position?: Vertex;
+    thickness?: number;
+    extrusionDirection?: Vertex;
+}
+
+interface EntityPOLYLINE extends Entity {
+    type: 'POLYLINE';
+    vertices: Vertex[];
+    thickness?: number;
+    shape?: boolean;
+    includesCurveFitVertices?: boolean;
+    includesSplineFitVertices?: boolean;
+    is3dPolyline?: boolean;
+    is3dPolygonMesh?: boolean;
+    is3dPolygonMeshClosed?: boolean;
+    isPolyfaceMesh?: boolean;
+    hasContinuousLinetypePattern?: boolean;
+    extrusionDirection?: Vertex;
+}
+
+interface EntitySOLID extends Entity {
+    type: 'SOLID';
+    points?: Vertex[];
+    extrusionDirection?: Vertex;
+}
+
+interface EntitySPLINE extends Entity {
+    type: 'SPLINE';
+    controlPoints?: Vertex[];
+    fitPoints?: Vertex[];
+    startTangent?: Vertex;
+    endTangent?: Vertex;
+    knotValues?: number[];
+    closed?: boolean;
+    periodic?: boolean;
+    rational?: boolean;
+    planar?: boolean;
+    linear?: boolean;
+    degreeOfSplineCurve?: number;
+    numberOfKnots?: number;
+    numberOfControlPoints?: number;
+    numberOfFitPoints?: number;
+    normalVector?: Vertex;
+}
+
+interface EntityTEXT extends Entity {
+    type: 'TEXT';
+    startPoint?: Vertex;
+    endPoint?: Vertex;
+    textHeight?: number;
+    xScale?: number;
+    rotation?: number;
+    text?: string;
+    halign?: number;
+    valign?: number;
+}
+
+interface EntityVERTEX extends Entity, Vertex {
+    type: 'VERTEX';
+    curveFittingVertex?: boolean;
+    curveFitTangent?: boolean;
+    splineVertex?: boolean;
+    splineControlPoint?: boolean;
+    threeDPolylineVertex?: boolean;
+    threeDPolylineMesh?: boolean;
+    polyfaceMeshVertex?: boolean;
+}
+
+declare module "dxf-parser" {
+    export = DxfParser;
 }
