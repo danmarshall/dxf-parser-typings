@@ -20,14 +20,31 @@ declare namespace DxfParser {
     }
 
     interface Entity {
-        handle?: number;
-        ownerHandle?: number;
-        type?: string | number;
+        handle?: string;
+        ownerHandle?: string;
+        type?: string;
+        materialObjectHandle?: string;
+        lineType?: string;
+        layer?: string;
+        lineTypeScale?: number;
+        lineweight?: number;
+        visible?: boolean;
+        colorIndex?: number;
+        color?: number;
+        inPaperSpace?: boolean;
+        extendedData?: ExtendedData;
     }
 
-    interface Block extends Entity {
+    interface ExtendedData {
+        applicationName?: string
+        customStrings?: string[];
+    }
+
+    interface Block {
         name?: string;
         name2?: string;
+        handle?: string;
+        ownerHandle?: string;
         xrefPath?: string;
         layer?: string;
         position?: Vertex;
@@ -37,8 +54,8 @@ declare namespace DxfParser {
     }
 
     interface Table {
-        handle?: number;
-        ownerHandle?: number;
+        handle?: string;
+        ownerHandle?: string;
     }
 
     interface Vertex {
@@ -50,7 +67,7 @@ declare namespace DxfParser {
 
     interface ViewPort {
         name?: string;
-        ownerHandle?: number;
+        ownerHandle?: string;
         ambientColor?: number;
         lensLength?: number;
         backClippingPlane?: number;
@@ -228,7 +245,7 @@ declare namespace DxfParser {
 
     interface EntityPOLYLINE extends Entity {
         type: 'POLYLINE';
-        vertices: Vertex[];
+        vertices: EntityVERTEX[];
         thickness?: number;
         shape?: boolean;
         includesCurveFitVertices?: boolean;
