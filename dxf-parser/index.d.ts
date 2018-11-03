@@ -58,6 +58,20 @@ declare namespace DxfParser {
         ownerHandle?: string;
     }
 
+    type TableNames = 'layer' | 'lineType' | 'viewPort';
+
+    interface TableLAYER extends Table {
+        layers: { [layerName: string]: Layer };
+    }
+
+    interface TableLTYPE {
+        lineTypes: { [lineTypeName: string]: LineType };
+    }
+
+    interface TableVPORT {
+        viewPorts: { [viewPortName: string]: ViewPort };
+    }
+
     interface Vertex {
         x: number;
         y: number;
