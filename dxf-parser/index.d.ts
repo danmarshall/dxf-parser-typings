@@ -64,11 +64,11 @@ declare namespace DxfParser {
         layers: { [layerName: string]: Layer };
     }
 
-    interface TableLTYPE {
+    interface TableLTYPE extends Table {
         lineTypes: { [lineTypeName: string]: LineType };
     }
 
-    interface TableVPORT {
+    interface TableVPORT extends Table {
         viewPorts: { [viewPortName: string]: ViewPort };
     }
 
