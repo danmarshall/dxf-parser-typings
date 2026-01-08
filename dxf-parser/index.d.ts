@@ -111,6 +111,7 @@ declare namespace DxfParser {
         description?: string;
         pattern?: number[];
         patternLength?: number;
+        elements?: number[];
     }
 
     interface Layer {
@@ -119,6 +120,7 @@ declare namespace DxfParser {
         colorIndex?: number;
         color?: number;
         frozen?: boolean;
+        lineType?: string;
     }
 
     interface Entity3DFACE extends Entity {
